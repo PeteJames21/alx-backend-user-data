@@ -4,7 +4,7 @@ Defines a function that obfuscates selected fields in a log message.
 """
 
 import logging
-import mysql
+import mysql.connector
 import re
 import os
 from typing import List

@@ -3,7 +3,6 @@
 Defines a function that obfuscates selected fields in a log message.
 """
 
-import bcrypt
 import logging
 import mysql.connector
 import re
@@ -70,12 +69,6 @@ def main():
 
     cursor.close()
     db.close()
-
-
-def hash_password(password: str) -> bytes:
-    """Hash a password."""
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password.encode('utf-8'), salt)
 
 
 class RedactingFormatter(logging.Formatter):

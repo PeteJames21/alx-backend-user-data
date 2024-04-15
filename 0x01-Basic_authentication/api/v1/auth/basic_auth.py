@@ -4,6 +4,7 @@ Defines a class for performing basic authentication.
 """
 
 from .auth import Auth
+import base64
 
 
 class BasicAuth(Auth):
@@ -19,3 +20,14 @@ class BasicAuth(Auth):
         if not authorization_header.startswith('Basic '):
             return None
         return authorization_header.split('Basic ', maxsplit=1)[1]
+
+    def decode_base64_authorization_header(
+            self, base64_authorization_header: str) -> str:
+        """Decode a base64 encoded string."""
+        if not base64_authorization_header:
+            return None
+        try:
+            s = base64.b64decode(base64_authorization_header)
+            return s.decode('utf-8')
+        except Exception:
+            return None

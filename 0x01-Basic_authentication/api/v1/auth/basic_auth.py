@@ -64,7 +64,7 @@ class BasicAuth(Auth):
         except Exception:
             return None
 
-    def current_user(self, request=None) -> TypeVar('User')
+    def current_user(self, request=None) -> TypeVar('User'):
         """Get the current user based on info from the auth header."""
         auth_header = self.authorization_header(request)
         if auth_header is not None:

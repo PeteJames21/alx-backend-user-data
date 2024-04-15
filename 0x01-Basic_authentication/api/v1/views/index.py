@@ -31,3 +31,10 @@ def unauthorized() -> str:
     """Return error 401
     """
     abort(401)
+
+
+@app_views.route('/forbidden/', strict_slashes=False)
+def forbidden() -> str:
+    """Return error 403
+    """
+    abort(403)

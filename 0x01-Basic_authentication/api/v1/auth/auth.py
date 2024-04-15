@@ -25,8 +25,11 @@ class Auth:
             return True
 
     def authorization_header(self, request=None) -> str:
-        """TODO: implement"""
-        return None
+        """Return the authorization header, or None if not found."""
+        if not request:
+            return None
+        auth_header = request.headers.get('Authorization', None)
+        return auth_header
 
     def current_user(self, request=None) -> TypeVar('User'):
         """TODO: implement"""

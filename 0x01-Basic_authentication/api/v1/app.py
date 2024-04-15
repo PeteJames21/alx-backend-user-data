@@ -12,6 +12,11 @@ import os
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+auth = None
+AUTH_TYPE = getenv('AUTH_TYPE', None)
+if AUTH_TYPE == 'auth':
+    from .auth.auth import Auth
+    auth = Auth()
 
 
 @app.errorhandler(404)
@@ -26,6 +31,23 @@ def not_authorized(error) -> str:
     """Not authorized handler
     """
     return jsonify({"error": "Unauthorized"}), 401
+
+
+@app.before_request
+def authenticate():
+    # Paths that require authentication
+    if not auth:
+        return
+    excluded = ['/api/v1/status/', '/api/v1/unauthorized/',
+                '/api/v1/forbidden/']
+    if not auth.require_auth(request.path, excluded):
+        # Path does not require authentication
+        return
+    else:
+        if not auth.authorization_header(request):
+            abort(401)
+        if not auth.current_user(request):
+            abort(403)
 
 
 @app.errorhandler(403)

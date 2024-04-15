@@ -35,6 +35,7 @@ def not_authorized(error) -> str:
 
 @app.before_request
 def authenticate():
+    """Authenticate the request."""
     # Paths that require authentication
     if not auth:
         return

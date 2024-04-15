@@ -34,3 +34,8 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """TODO: implement"""
         return None
+
+
+class BasicAuth(Auth):
+    """Class for handling basic authentication."""
+    pass

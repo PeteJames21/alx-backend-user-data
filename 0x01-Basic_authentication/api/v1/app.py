@@ -17,6 +17,9 @@ AUTH_TYPE = getenv('AUTH_TYPE', None)
 if AUTH_TYPE == 'auth':
     from .auth.auth import Auth
     auth = Auth()
+elif AUTH_TYPE == 'basic_auth':
+    from .auth.auth import BasicAuth
+    auth = BasicAuth()
 
 
 @app.errorhandler(404)

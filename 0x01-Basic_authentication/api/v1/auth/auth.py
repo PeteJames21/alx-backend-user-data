@@ -3,7 +3,6 @@
 Defines a class for handling authentication.
 """
 
-from flask import request
 from typing import List, TypeVar
 
 
@@ -34,8 +33,3 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """TODO: implement"""
         return None
-
-
-class BasicAuth(Auth):
-    """Class for handling basic authentication."""
-    pass

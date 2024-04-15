@@ -18,7 +18,7 @@ if AUTH_TYPE == 'auth':
     from .auth.auth import Auth
     auth = Auth()
 elif AUTH_TYPE == 'basic_auth':
-    from .auth.auth import BasicAuth
+    from .auth.basic_auth import BasicAuth
     auth = BasicAuth()
 
 

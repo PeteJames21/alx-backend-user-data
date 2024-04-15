@@ -3,8 +3,10 @@
 Defines a class for performing basic authentication.
 """
 
-from .auth import Auth
 import base64
+from .auth import Auth
+from typing import TypeVar
+from ..views.users import User
 
 
 class BasicAuth(Auth):
@@ -42,3 +44,22 @@ class BasicAuth(Auth):
             return None, None
         uname, pwd = header.split(':', maxsplit=1)
         return uname, pwd
+
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str) -> TypeVar('User'):
+        """Return the user matching the provided parameters."""
+        if user_email is None or type(user_email) is not str:
+            return None
+        if user_pwd is None or type(user_pwd) is not str:
+            return None
+
+        try:
+            users = User.search({"email": user_email})
+            if not users or users == []:
+                return None
+            for user in users:
+                if user.is_valid_password(user_pwd):
+                    return user
+            return None
+        except Exception:
+            return None

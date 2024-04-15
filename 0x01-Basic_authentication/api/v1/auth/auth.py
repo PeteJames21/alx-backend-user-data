@@ -4,6 +4,7 @@ Defines a class for handling authentication.
 """
 
 from typing import List, TypeVar
+import re
 
 
 class Auth:
@@ -21,6 +22,11 @@ class Auth:
         if path in excluded_paths:
             return False
         else:
+            # Attempt to match any paths ending with '*' in excluded_paths
+            wildcards = filter(lambda s: s.endswith('*'), excluded_paths)
+            for regex in wildcards:
+                if re.match(regex, path):
+                    return False
             return True
 
     def authorization_header(self, request=None) -> str:

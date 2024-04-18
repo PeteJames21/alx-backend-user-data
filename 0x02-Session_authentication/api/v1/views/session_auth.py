@@ -4,6 +4,7 @@ Module for session authentication views.
 """
 from api.v1.views import app_views
 from models.user import User
+from flask import abort
 from flask import jsonify
 from flask import make_response
 from flask import request
@@ -34,3 +35,14 @@ def login():
     response = jsonify(user.to_json())
     response.set_cookie(environ.get('SESSION_NAME'), session_id)
     return response
+
+
+@app_views.route('/api/v1/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def logout():
+    """Log out the user by destroying the session."""
+    from api.v1.app import auth
+    success = auth.destroy_session(request)
+    if not success:
+        abort(404)
+    return jsonify({}), 200

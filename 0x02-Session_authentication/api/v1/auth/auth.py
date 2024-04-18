@@ -4,6 +4,7 @@ Defines a class for handling authentication.
 """
 
 from typing import List, TypeVar
+import os
 import re
 
 
@@ -39,3 +40,10 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """TODO: implement"""
         return None
+
+    def session_cookie(self, request=None):
+        """Get the value of the cookie defined by the SESSION_NAME env var."""
+        if not request:
+            return None
+        session_name = os.environ.get('SESSION_NAME')
+        return request.cookies.get(session_name)

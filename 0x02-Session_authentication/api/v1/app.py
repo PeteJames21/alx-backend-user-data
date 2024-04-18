@@ -46,12 +46,16 @@ def authenticate():
     if not auth:
         return
     excluded = ['/api/v1/status/', '/api/v1/unauthorized/',
-                '/api/v1/forbidden/']
-    if not auth.require_auth(request.path, excluded):
-        # Path does not require authentication
-        return
-    else:
-        if not auth.authorization_header(request):
+                '/api/v1/forbidden/', '/api/v1/auth_session/login/']
+
+    # Path requires authentication
+    if auth.require_auth(request.path, excluded):
+        cookie = auth.session_cookie(request)
+        if not auth.authorization_header(request) and not cookie:
+            # Neither using session nor basic auth
+            abort(401)
+        if auth.authorization_header(request) and auth.session_cookie(request):
+            # Can't use session and basic auth at the same time
             abort(401)
         if not auth.current_user(request):
             abort(403)
